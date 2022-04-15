@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Carousel } from "react-bootstrap";
 import './Banner.css'
 
+import banner1 from '../../../images/expert/banner1.jpg'
+import banner2 from  '../../../images/expert/banner2.jpg'
+import banner3 from '../../../images/expert/banner3.jpg'
+
+ 
 const Banner = () => {
   const [index, setIndex] = useState(0);
 
@@ -9,12 +14,12 @@ const Banner = () => {
     setIndex(selectedIndex);
   };
   return (
-    <div>
+    <div className="" id="slider">
       <Carousel activeIndex={index} onSelect={handleSelect}>
         <Carousel.Item>
           <img
             className="d-block w-100  fluid  "
-            src="https://images.unsplash.com/photo-1499479580456-babf3fe4ef26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=871&q=80"
+            src={banner1}
             alt="First slide"
             
           />
@@ -26,7 +31,7 @@ const Banner = () => {
         <Carousel.Item>
           <img
             className="d-block w-100   fluid  "
-            src="https://images.unsplash.com/photo-1649731667009-765d566ff5de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+            src={banner2}
             alt="Second slide"
           />
 
@@ -38,7 +43,7 @@ const Banner = () => {
         <Carousel.Item>
           <img
             className="d-block w-100  fluid   "
-            src="https://images.unsplash.com/photo-1513279922550-250c2129b13a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+            src={banner3}
             alt="Third slide"
           />
 
