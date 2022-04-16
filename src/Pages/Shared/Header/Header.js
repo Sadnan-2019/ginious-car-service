@@ -58,7 +58,7 @@ const Header = () => {
      
                
               </Nav.Link>
-              <div className="d-flex align-items-center me-2"> <span>{user? user.email : ""}</span></div>
+              <div className="d-flex align-items-center me-2"> <span>{user? user?.email : ""}</span></div>
              {user? <button className="btn btn-info" onClick={logout}>Sign out</button>
              :
               <Nav.Link

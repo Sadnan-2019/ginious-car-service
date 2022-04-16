@@ -1,31 +1,42 @@
 // import { Button } from 'bootstrap';
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import { async } from "@firebase/util";
 // import auth from "../../firebase.init";
 
 const Register = () => {
+  const [agree,setAgree]  = useState(false)
   const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth,{sendEmailVerification:true});
+    const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
+
   const navigate = useNavigate();
 
   const navigateLogin = (event) => {
     navigate("login");
   };
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
     const name = event.target.name.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
-    createUserWithEmailAndPassword(email, password,name);
+   await createUserWithEmailAndPassword(email, password);
+
+   await updateProfile({ displayName:name });
+          // alert('Updated profile');
+          console.log("Update profile")
+          navigate("/home")
 //     console.log(email, password,name);
   };
   if(user){
 
-          navigate("/home")
+          // navigate("/home")
+          console.log(user,"user")
   }
 
   return (
@@ -51,9 +62,10 @@ const Register = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
+          <Form.Check type="checkbox" name="terms" className={agree ? "text-primary": "text-danger"} id="terms" label="Accept genious car Terms & Condition " onClick={()=>setAgree(!agree)} />
         </Form.Group>
-        <input className=" btn btn-info" type="submit" value="Register" />
+        <input className=" btn btn-info" type="submit" value="Register" disabled ={!agree} />
+        
       </Form>
       <p className="text-center bg-dark text-light mt-2 rounded">
         Already accout?
@@ -65,6 +77,7 @@ const Register = () => {
           Please Login
         </Link>
       </p>
+      <SocialLogin></SocialLogin>
     </div>
   );
 };

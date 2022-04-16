@@ -1,20 +1,27 @@
 import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from "../../../firebase.init";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import { ToastContainer, toast } from 'react-toastify';
 
+  import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
 const location =useLocation();
 const from = location.state?.from?.pathname || "/";
+const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
+  auth
+);
       const [
             signInWithEmailAndPassword,
             user,
             loading,
             error,
           ] = useSignInWithEmailAndPassword(auth);
+          let errorElement;
   const refEmail = useRef("");
   const refPassword = useRef("");
   const navigate = useNavigate();
@@ -24,15 +31,32 @@ const from = location.state?.from?.pathname || "/";
     const email = refEmail.current.value;
     const password = refPassword.current.value;
     signInWithEmailAndPassword(email,password)
-    navigate(from, { replace: true });
+   
 //     console.log(email, password);
   };
+
+  if(error){
+    errorElement= <div>
+      <p className="text-danger">{error?.message}</p>
+    </div>
+  }
   if(user){
-        navigate('/home')
+    navigate(from, { replace: true });
   }
 
   const navigateRegister = (event) => {
     navigate("/register");
+  };
+  const navigateResetPassword = async () => {
+    const email = refEmail.current.value;
+   if(email){
+    await sendPasswordResetEmail(email);
+    toast('Sent email');
+   }else{
+     toast("Please Enter Your Email ")
+   }
+
+    // navigate("/register");
   };
   return (
     <div className="w-50 mx-auto">
@@ -47,9 +71,7 @@ const from = location.state?.from?.pathname || "/";
             placeholder="Enter email"
             required
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
+          
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -61,14 +83,14 @@ const from = location.state?.from?.pathname || "/";
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
+        
         <Button variant="primary" type="submit">
-          Submit
+          Login
         </Button>
       </Form>
+      {errorElement}
       <p className="text-center bg-dark text-light mt-2 rounded">
+       
         New to Ginious car?{" "}
         <Link
           to="/register"
@@ -78,6 +100,20 @@ const from = location.state?.from?.pathname || "/";
           Please Register
         </Link>
       </p>
+      <p className="text-center bg-dark text-light mt-2   rounded">
+       
+        Forget Pssword
+        <button
+          to="/register"
+          onClick={navigateResetPassword}
+          className="text-center ms-2 text-decoration-none text-danger btn btn-link "
+        >
+          Reset Password
+        </button>
+      </p>
+      <SocialLogin></SocialLogin>
+      <ToastContainer />
+
     </div>
   );
 };
