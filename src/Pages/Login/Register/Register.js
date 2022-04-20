@@ -40,13 +40,13 @@ const Register = () => {
   }
 
   return (
-    <div className="w-50 mx-auto">
+    <div className="w-25  mx-auto">
       <h1 className="text-center">Please Register</h1>
 
       <Form onSubmit={handleRegister}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter name" name="name" />
+          <Form.Control type="text" placeholder="Enter name" name="name" required />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

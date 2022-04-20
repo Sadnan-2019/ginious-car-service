@@ -25,9 +25,15 @@ const Header = () => {
           <Navbar.Brand as={Link} to="/">
             <img src={logo} alt="" height={30} href="home#slider" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" className="bg-success text-light" />
-          <Navbar.Collapse id="responsive-navbar-nav" >
+          <Navbar.Toggle
+            aria-controls="responsive-navbar-nav"
+            className="bg-success text-light"
+          />
+          <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
+              <Nav.Link href="home" className="text-light">
+                Home
+              </Nav.Link>
               <Nav.Link href="home#services" className="text-light">
                 Services
               </Nav.Link>
@@ -55,20 +61,25 @@ const Header = () => {
             <Nav>
               <Nav.Link as={Link} to="/about" className="text-light">
                 About
-     
-               
               </Nav.Link>
-              <div className="d-flex align-items-center me-2"> <span>{user? user?.email : ""}</span></div>
-             {user? <button className="btn btn-info" onClick={logout}>Sign out</button>
-             :
-              <Nav.Link
-                eventKey={2}
-                as={Link}
-                to="/login"
-                className="text-light"
-              >
-                Login
-              </Nav.Link>}
+              <div className="d-flex align-items-center me-2">
+                {" "}
+                <span>{user ? user?.email : ""}</span>
+              </div>
+              {user ? (
+                <button className="btn btn-info" onClick={logout}>
+                  Sign out
+                </button>
+              ) : (
+                <Nav.Link
+                  eventKey={2}
+                  as={Link}
+                  to="/login"
+                  className="text-light"
+                >
+                  Login
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
