@@ -62,6 +62,20 @@ const Header = () => {
               <Nav.Link as={Link} to="/about" className="text-light">
                 About
               </Nav.Link>
+
+                {
+                  user && 
+                 <>
+                  <Nav.Link as={Link} to="/addservice" className="text-light">
+                  Add Service
+                </Nav.Link>
+                <Nav.Link as={Link} to="/manage" className="text-light">
+                  Manage Service
+                </Nav.Link>
+                 </>
+                }
+
+
               <div className="d-flex align-items-center me-2">
                 {" "}
                 <span>{user ? user?.email : ""}</span>
