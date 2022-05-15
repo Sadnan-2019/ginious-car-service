@@ -13,10 +13,10 @@ const Order = () => {
   const navigate = useNavigate();
   console.log(orders);
 
-  useEffect(( ) => {
+  useEffect(() => {
     const getOrders = async () => {
       const email = user.email;
-      const url = `http://localhost:5000/order?email=${email}`;
+      const url = `https://agile-lake-44995.herokuapp.com/order?email=${email}`;
       try {
         const { data } = await axios.get(url, {
           headers: {
@@ -27,7 +27,7 @@ const Order = () => {
       } catch (error) {
         console.log(error.message);
         if (error.response.status === 401 || error.response.status === 403) {
-             signOut(auth)
+          signOut(auth);
           navigate("/login");
         }
       }

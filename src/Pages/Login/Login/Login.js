@@ -1,54 +1,55 @@
 import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import {
+  useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-  import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const Login = () => {
-
-const location =useLocation();
-const from = location.state?.from?.pathname || "/";
-const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
-  auth
-);
-      const [
-            signInWithEmailAndPassword,
-            user,
-            loading,
-            error,
-          ] = useSignInWithEmailAndPassword(auth);
-          let errorElement;
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  let errorElement;
   const refEmail = useRef("");
   const refPassword = useRef("");
   const navigate = useNavigate();
 
-  const handleSubmit =  async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = refEmail.current.value;
     const password = refPassword.current.value;
-    await signInWithEmailAndPassword(email,password)
-    const {data} = await axios.post("http://localhost:5000/login",{email});
-    localStorage.setItem('accesToken', data); 
-        navigate(from, { replace: true });
+    await signInWithEmailAndPassword(email, password);
+    const { data } = await axios.post(
+      "https://agile-lake-44995.herokuapp.com/login",
+      { email }
+    );
+    localStorage.setItem("accesToken", data);
+    navigate(from, { replace: true });
 
     // console.log(data)
     // console.log(data.accesToken)
-   
-//     console.log(email, password);
+
+    //     console.log(email, password);
   };
 
-  if(error){
-    errorElement= <div>
-      <p className="text-danger">{error?.message}</p>
-    </div>
+  if (error) {
+    errorElement = (
+      <div>
+        <p className="text-danger">{error?.message}</p>
+      </div>
+    );
   }
-  if(user){
-    navigate('/');
+  if (user) {
+    navigate("/");
   }
 
   const navigateRegister = (event) => {
@@ -56,12 +57,12 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
   };
   const navigateResetPassword = async () => {
     const email = refEmail.current.value;
-   if(email){
-    await sendPasswordResetEmail(email);
-    toast('Sent email');
-   }else{
-     toast("Please Enter Your Email ")
-   }
+    if (email) {
+      await sendPasswordResetEmail(email);
+      toast("Sent email");
+    } else {
+      toast("Please Enter Your Email ");
+    }
 
     // navigate("/register");
   };
@@ -78,7 +79,6 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
             placeholder="Enter email"
             required
           />
-          
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -90,14 +90,13 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
             required
           />
         </Form.Group>
-        
+
         <Button variant="primary" type="submit">
           Login
         </Button>
       </Form>
       {errorElement}
       <p className="text-center bg-dark text-light mt-2 rounded">
-       
         New to Ginious car?{" "}
         <Link
           to="/register"
@@ -108,7 +107,6 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
         </Link>
       </p>
       <p className="text-center bg-dark text-light mt-2   rounded">
-       
         Forget Pssword
         <button
           to="/register"
@@ -119,7 +117,6 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
         </button>
       </p>
       <SocialLogin></SocialLogin>
-
     </div>
   );
 };
