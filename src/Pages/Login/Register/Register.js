@@ -12,11 +12,12 @@ import useToken from "../../../hooks/useToken";
 
 
 const Register = () => {
-  const [token]= useToken()
+ 
   const [agree,setAgree]  = useState(false)
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth,{sendEmailVerification:true});
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
+    const [token]= useToken(user)
    
 
   const navigate = useNavigate();
