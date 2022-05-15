@@ -4,9 +4,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from "../../../firebase.init";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
   import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 const Login = () => {
 
@@ -26,11 +27,17 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
   const refPassword = useRef("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit =  async event => {
     event.preventDefault();
     const email = refEmail.current.value;
     const password = refPassword.current.value;
-    signInWithEmailAndPassword(email,password)
+    await signInWithEmailAndPassword(email,password)
+    const {data} = await axios.post("http://localhost:5000/login",{email});
+    localStorage.setItem('accesToken', data); 
+        navigate(from, { replace: true });
+
+    // console.log(data)
+    // console.log(data.accesToken)
    
 //     console.log(email, password);
   };
@@ -41,7 +48,7 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
     </div>
   }
   if(user){
-    navigate(from, { replace: true });
+    navigate('/');
   }
 
   const navigateRegister = (event) => {
@@ -112,7 +119,6 @@ const [sendPasswordResetEmail, sending,] = useSendPasswordResetEmail(
         </button>
       </p>
       <SocialLogin></SocialLogin>
-      <ToastContainer />
 
     </div>
   );
