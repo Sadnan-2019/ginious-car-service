@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import useToken from "../../../hooks/useToken";
 
 const Login = () => {
   const location = useLocation();
@@ -22,19 +23,18 @@ const Login = () => {
   const refEmail = useRef("");
   const refPassword = useRef("");
   const navigate = useNavigate();
-
+  const [token] =useToken(user);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = refEmail.current.value;
     const password = refPassword.current.value;
     await signInWithEmailAndPassword(email, password);
-    const { data } = await axios.post(
-      "https://agile-lake-44995.herokuapp.com/login",
-      { email }
-    );
-    localStorage.setItem("accesToken", data);
-    navigate(from, { replace: true });
-
+    // const { data } = await axios.post(
+    //   "https://agile-lake-44995.herokuapp.com/login",
+    //   { email }
+    // );
+    // localStorage.setItem("accesToken", data);
+    
     // console.log(data)
     // console.log(data.accesToken)
 
@@ -48,8 +48,10 @@ const Login = () => {
       </div>
     );
   }
-  if (user) {
-    navigate("/");
+  if (token) {
+    // navigate("/");
+    navigate(from, { replace: true });
+
   }
 
   const navigateRegister = (event) => {

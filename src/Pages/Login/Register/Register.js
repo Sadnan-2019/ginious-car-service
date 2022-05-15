@@ -8,11 +8,16 @@ import SocialLogin from "../SocialLogin/SocialLogin";
 import { async } from "@firebase/util";
 // import auth from "../../firebase.init";
 
+import useToken from "../../../hooks/useToken";
+
+
 const Register = () => {
+  const [token]= useToken()
   const [agree,setAgree]  = useState(false)
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth,{sendEmailVerification:true});
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
+   
 
   const navigate = useNavigate();
 
@@ -33,10 +38,10 @@ const Register = () => {
           navigate("/home")
 //     console.log(email, password,name);
   };
-  if(user){
+  if(token){
 
-          // navigate("/home")
-          console.log(user,"user")
+          navigate("/home")
+          // console.log(user,"user")
   }
 
   return (
